@@ -23,11 +23,11 @@ def solution(n, results):
                     visit[x] = True
                     p[k] += [x]
                     s.append(x)
-        return p
+       
 
     for k in range(1,n+1):
-        w = dfs(k,w)
-        l = dfs(k,l)
+        dfs(k,w)
+        dfs(k,l)
             
     for player in range(1,n+1):
         if len(w[player]) + len(l[player]) == n-1:
