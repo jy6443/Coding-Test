@@ -10,7 +10,6 @@ class Solution {
             dfs(cnt,0,col,now,keys,relation);
         }
         answer = keys.size();
-        System.out.println(keys);
         return answer;
     }
     
