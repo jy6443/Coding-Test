@@ -1,19 +1,19 @@
-import java.util.*;
 class Solution {
     public int[] solution(int[] prices) {
-        int[] answer = new int[prices.length];
-        // 초기값 세팅
-        for(int i=0;i<prices.length; i++){ 
-            answer[i] = prices.length - (i+1);
-        }
-        Deque<Integer> s = new ArrayDeque<>();
+        int[] answer = new int[prices.length]; // 0으로 세팅.
         for(int i=0; i<prices.length; i++){
-            while(!s.isEmpty() && prices[s.peek()] > prices[i]){
-                int j = s.pop();
-                answer[j] = i - j;
+            int t = 0;
+            int j = i + 1;
+            while(j < prices.length){
+                t++;
+                if(prices[i] > prices[j]){
+                    break;
+                } else {
+                    j++;
+                }
             }
-            s.push(i);
-        }
+            answer[i] = t;
+        }        
         return answer;
     }
 }
