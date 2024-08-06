@@ -1,12 +1,13 @@
 import java.util.*;
 class Solution {
     public int solution(String s) {
-        Map<Character, Character> map = new HashMap<>();
-        map.put('}','{');
-        map.put(']','[');
-        map.put(')','(');
-        Queue<Character> q = new ArrayDeque<>();
         int answer = 0;
+        Map<Character,Character> map = new HashMap<>();
+        map.put('}','{');
+        map.put(')','(');
+        map.put(']','[');
+        Queue<Character> q = new ArrayDeque<>();
+        
         for(int i=0; i<s.length(); i++){
             q.add(s.charAt(i));
         }
@@ -14,7 +15,7 @@ class Solution {
             Deque<Character> stack = new ArrayDeque<>();
             for(int j=0; j<s.length(); j++){
                 char c = q.remove();
-                if(!stack.isEmpty() && map.get(c) == stack.peek()) {
+                if(!stack.isEmpty() && map.containsKey(c) && map.get(c) == stack.peek()){
                     stack.pop();
                 } else {
                     stack.push(c);
@@ -27,7 +28,6 @@ class Solution {
                 answer++;
             }
         }
-        
         return answer;
     }
 }
