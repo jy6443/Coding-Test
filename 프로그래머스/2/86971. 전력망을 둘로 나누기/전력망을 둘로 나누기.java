@@ -1,31 +1,36 @@
 import java.util.*;
 class Solution {
-    public int answer;
     public int solution(int n, int[][] wires) {
-        answer = n;
-        int len = wires.length;
-        boolean[] visit = new boolean[n+1];
-        Map<Integer,List<Integer>> node = new HashMap<>();
-        for(int i=0; i<n; i++){
-            node.put(i+1,new ArrayList<>());
+        int answer = n;
+        Map<Integer,List<Integer>> map = new HashMap<>();
+        for(int i=1; i<=n; i++){
+            map.put(i,new ArrayList<>());
         }
-        for(int[] cur : wires){
-            node.get(cur[0]).add(cur[1]);
-            node.get(cur[1]).add(cur[0]);
+        for(int i=0; i<wires.length; i++){
+            int a = wires[i][0], b = wires[i][1];
+            map.get(a).add(b);
+            map.get(b).add(a);
         }
-        dfs(1,node,visit,n);
-        
-        return answer;
-    }
-    public int dfs(int now, Map<Integer,List<Integer>> node, boolean[] visit, int n){
-        int count = 1;
-        visit[now] = true;
-        for(int d : node.get(now)){
-            if(!visit[d]){
-                count += dfs(d, node, visit, n);
+        for(int i=0; i<wires.length; i++){
+            int cnt = 0;
+            boolean visit[] = new boolean[n+1];
+            int a = wires[i][0], b = wires[i][1];
+            Queue<Integer> q = new ArrayDeque<>();
+            q.add(a);
+            visit[a] = true;
+            visit[b] = true;
+            while(!q.isEmpty()){
+                int out = q.remove();
+                cnt++;
+                for(int temp : map.get(out)){
+                    if(!visit[temp]){
+                        q.add(temp);
+                        visit[temp] = true;
+                    }
+                }
             }
+            answer = Math.min(answer, Math.abs(n - (2*cnt)));
         }
-        answer = Math.min(answer, Math.abs(n - 2 * count));
-        return count;
+        return answer;
     }
 }
