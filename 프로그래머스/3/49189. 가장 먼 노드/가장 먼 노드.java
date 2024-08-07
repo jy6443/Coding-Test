@@ -1,57 +1,38 @@
 import java.util.*;
 class Solution {
-    public int solution(int n, int[][] edges) {
+    public int solution(int n, int[][] edge) {
         int answer = 0;
-        int max_val = 0;
-        int len = edges.length;
         int[] visit = new int[n+1];
-        int[][] edge = new int[len * 2][2];
-        for(int i=0; i<edges.length; i++){
-            edge[i][0] = edges[i][0];
-            edge[i][1] = edges[i][1];
-            edge[len+i][0] = edge[i][1];
-            edge[len+i][1] = edge[i][0];
-        }
-        
-        Arrays.sort(edge, (a, b) -> {
-            if(a[0] == b[0]){
-                return a[1] - b[1];
-            }
-            return a[0] - b[0];
-        });
+        Map<Integer,List<Integer>> nodes = new HashMap<>();
         Queue<Integer> q = new ArrayDeque<>();
-        visit[1] = 1;
-        for(int[] node : edge) {
-            if(node[0] == 1){
-                q.add(node[1]);
-                visit[node[1]] = visit[node[0]] + 1;
-            } else{
-                break;
-            }
+        for(int i=1; i<=n; i++){
+            nodes.put(i,new ArrayList<>());
         }
+        for(int i=0; i<edge.length; i++){
+            int a = edge[i][0], b = edge[i][1];
+            nodes.get(a).add(b);
+            nodes.get(b).add(a);
+        }
+        q.add(1);
+        visit[1] = 1;
         while(!q.isEmpty()){
             int out = q.remove();
-            for(int[] node : edge){
-                if(node[0] == out && visit[node[1]] == 0){
-                    q.add(node[1]);
-                    visit[node[1]] = visit[out] + 1;
-                } else if(node[0] > out){
-                    break;
-                }   
+            for(int next : nodes.get(out)){
+                if(visit[next] == 0){
+                    visit[next] = visit[out] + 1;
+                    q.add(next);
+                }
             }
-            
         }
-        for(int i : visit){
-            if(i > max_val){
+        int max_dep = 0;
+        for(int dep : visit){
+            if(dep > max_dep){
+                max_dep = dep;
                 answer = 1;
-                max_val = i;
-            } else if(i == max_val){
+            } else if(dep == max_dep){
                 answer++;
-            } else{
-                continue;
             }
         }
-        
         return answer;
     }
 }
