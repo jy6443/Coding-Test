@@ -2,28 +2,21 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
+        String ss = s + s;
         Map<Character,Character> map = new HashMap<>();
-        map.put('}','{');
         map.put(')','(');
+        map.put('}','{');
         map.put(']','[');
-        Queue<Character> q = new ArrayDeque<>();
-        
-        for(int i=0; i<s.length(); i++){
-            q.add(s.charAt(i));
-        }
         for(int i=0; i<s.length(); i++){
             Deque<Character> stack = new ArrayDeque<>();
-            for(int j=0; j<s.length(); j++){
-                char c = q.remove();
-                if(!stack.isEmpty() && map.containsKey(c) && map.get(c) == stack.peek()){
+            for(int j=i; j<i+s.length(); j++){
+                char c = ss.charAt(j);
+                if(!stack.isEmpty() && map.containsKey(c) && stack.peek() == map.get(c)){
                     stack.pop();
                 } else {
                     stack.push(c);
                 }
-                q.add(c);
             }
-            char cc = q.remove();
-            q.add(cc);
             if(stack.isEmpty()){
                 answer++;
             }
