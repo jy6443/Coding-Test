@@ -1,23 +1,19 @@
 class Solution {
-    public int max;
+    public int answer;
     public int solution(int k, int[][] dungeons) {
-        boolean[] check = new boolean[dungeons.length];
-        max = 0;
-        loop (k, dungeons, 0, check);
-        return max;
+        answer = 0;
+        boolean[] visit = new boolean[dungeons.length];
+        bt(k,dungeons,visit,0);
+        return answer;
     }
-    public void loop(int k, int[][] dungeons, int count,boolean[] check ) {
-        for(int i=0; i<dungeons.length; i++) {
-            if(dungeons[i][0] <=  k && !check[i]) {
-                check[i] = true;
-                loop(k-dungeons[i][1], dungeons, count+1, check);
-                check[i] = false;
-                
-                }
+    public void bt(int k,int[][] dungeons, boolean[] visit, int cnt){
+        for(int i=0; i<dungeons.length; i++){
+            if(dungeons[i][0] <= k && !visit[i]){
+                visit[i] = true;
+                bt(k-dungeons[i][1], dungeons, visit, cnt+1);
+                visit[i] = false;
+            }
         }
-        if (count > max) {
-            max = count;
-        }
-    
+        answer = Math.max(answer, cnt);
     }
 }
