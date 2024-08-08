@@ -1,37 +1,38 @@
 import java.util.*;
 class Solution {
     public int solution(int n, int[][] edge) {
-        int answer = 0;
-        int[] visit = new int[n+1];
-        Map<Integer,List<Integer>> nodes = new HashMap<>();
+        int[] visit = new int[n+1]; 
+        Map<Integer,List<Integer>> map = new HashMap<>();
         Queue<Integer> q = new ArrayDeque<>();
         for(int i=1; i<=n; i++){
-            nodes.put(i,new ArrayList<>());
+            map.put(i,new ArrayList<>());
         }
-        for(int i=0; i<edge.length; i++){
-            int a = edge[i][0], b = edge[i][1];
-            nodes.get(a).add(b);
-            nodes.get(b).add(a);
+        for(int[] e : edge){
+            int a = e[0], b = e[1];
+            map.get(a).add(b);
+            map.get(b).add(a);
         }
         q.add(1);
         visit[1] = 1;
         while(!q.isEmpty()){
             int out = q.remove();
-            for(int next : nodes.get(out)){
+            for(int next : map.get(out)){
                 if(visit[next] == 0){
                     visit[next] = visit[out] + 1;
                     q.add(next);
                 }
             }
         }
-        int max_dep = 0;
-        for(int dep : visit){
-            if(dep > max_dep){
-                max_dep = dep;
+        int max_val = 0;
+        int answer = 0;
+        for(int i=1; i<=n; i++){
+            if(visit[i] > max_val){
+                max_val = visit[i];
                 answer = 1;
-            } else if(dep == max_dep){
+            } else if (visit[i] == max_val){
                 answer++;
             }
+            
         }
         return answer;
     }
