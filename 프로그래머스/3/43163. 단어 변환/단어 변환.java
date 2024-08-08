@@ -4,42 +4,35 @@ class Solution {
         int answer = 0;
         Queue<Integer> q = new ArrayDeque<>();
         int[] visit = new int[words.length];
-        for (int i=0; i<words.length; i++) {
-            int cnt = 0;
-            for (int j=0; j<words[i].length(); j++) {
-                if (begin.charAt(j) == words[i].charAt(j)) {
-                    cnt++;
-                }
-            }
-            if (cnt == begin.length()-1) {
+        for(int i=0; i<words.length; i++){
+            if(trans(begin,words[i])){
                 q.add(i);
                 visit[i] = 1;
             }
         }
-        while(q.size() > 0) {
-            int idx  = q.remove();
-            if (words[idx].equals(target)) {
-                answer = visit[idx];
-                break;
+        
+        while(!q.isEmpty()){
+            int out = q.remove();
+            if(words[out].equals(target)){
+                answer = visit[out];
             }
-            for (int i=0; i<words.length; i++) {
-                int cnt = 0;
-                if (visit[i] == 0) {
-                    for (int j=0; j<words[i].length(); j++) {
-                        if (words[idx].charAt(j) == words[i].charAt(j)) {
-                            cnt++;
-                        }
-                    }
-                    if (cnt == begin.length()-1) {
-                        if (answer == 0) { answer++; }
-                        q.add(i);
-                        visit[i] = visit[idx] + 1;
-                    }
+            for(int i=0; i<words.length; i++){
+                if(trans(words[out],words[i]) && visit[i]==0){
+                    visit[i] = visit[out] + 1;
+                    q.add(i);
                 }
             }
-            
         }
-        
         return answer;
+    }
+    public boolean trans(String a, String b){
+        int len = a.length();
+        int cnt = 0;
+        for(int i=0; i<len; i++){
+            if(a.charAt(i) != b.charAt(i)){
+                cnt++;
+            }
+        }
+        return cnt == 1;
     }
 }
