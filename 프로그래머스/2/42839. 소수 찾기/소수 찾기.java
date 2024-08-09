@@ -1,44 +1,44 @@
 import java.util.*;
 class Solution {
-    public Set<Integer> set;
-    public boolean[] check;
-    public boolean isPrime(int x) {
-        for(int i=2; i<Math.sqrt(x)+1; i++) {
-            if(x != 2 && x % i == 0) {
-               return false;
-            }
-        }
-        return true;
-    }
-    public void dfs(int dep, String numbers, boolean[] check, int k, StringBuilder sb) {
-        if(dep == k){
-            set.add(Integer.parseInt(sb.toString()));
-            return;
-        }
-        for(int j=0; j<numbers.length(); j++){
-            char c = numbers.charAt(j);
-            if(!check[j]) {
-                check[j] = true;
-                sb.append(c);
-                dfs(dep+1,numbers,check,k,sb);
-                sb.deleteCharAt(sb.length()-1);
-                check[j] = false;
-            }
-        }
-    }
     public int solution(String numbers) {
         int answer = 0;
-        set = new HashSet<>();
-        check = new boolean[numbers.length()];
-        StringBuilder sb = new StringBuilder();
+        Set<Integer> set = new HashSet<>();
         for(int i=1; i<=numbers.length(); i++){
-            dfs(0,numbers,check,i,sb);
+            boolean[] visit = new boolean[numbers.length()];
+            StringBuilder temp = new StringBuilder();
+            num(set,visit,i,numbers,temp);
         }
-        for(Integer num : set) {
-            if(num > 1 && isPrime(num)){
+        for(Integer p : set){
+            if(isPrime(p)){
                 answer++;
             }
         }
         return answer;
+    }
+    public void num(Set<Integer> set, boolean[] visit, int cnt, String numbers,StringBuilder temp){
+        if(temp.length() == cnt){
+            set.add(Integer.parseInt(temp.toString()));
+        }
+        for(int i=0; i<numbers.length(); i++){
+            if(!visit[i]){
+                visit[i] = true;
+                temp.append(numbers.charAt(i));
+                num(set,visit,cnt,numbers,temp);
+                visit[i] = false;
+                temp.deleteCharAt(temp.length()-1);
+            }
+        }
+    }
+    public boolean isPrime(int x){
+        if(x == 2){ return true; }
+        if(x>1){
+            for(int i=2; i<Math.sqrt(x)+1; i++){
+                if(x%i==0){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
