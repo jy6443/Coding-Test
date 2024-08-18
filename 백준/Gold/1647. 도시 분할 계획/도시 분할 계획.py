@@ -1,3 +1,4 @@
+# 도시
 import sys
 import heapq
 input = sys.stdin.readline
@@ -13,7 +14,8 @@ for i in range(m):
 
 
 
-total = []
+total = 0
+max_cost = 0
 cnt = 0
 visit = [False] * (n+1)
 h = [(0,1)]
@@ -24,12 +26,15 @@ while h:
     if visit[node]:
         continue
     
-    total.append(cost)
+    total += cost
     cnt += 1
     visit[node] = True
 
+    if cost > max_cost:
+        max_cost = cost
+
     for next_cost, next_node in data[node]:
         if not visit[next_node]:
-            heapq.heappush(h,[next_cost,next_node])
+            heapq.heappush(h,(next_cost,next_node))
 
-print(sum(total) - max(total))
+print(total - max_cost)
