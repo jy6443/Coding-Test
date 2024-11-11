@@ -23,7 +23,7 @@ public class Main {
                     dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
-            answer = Math.max(answer, dp[i]);
+            answer = (answer > dp[i]) ? answer : dp[i];
         }
         System.out.println(answer);
     }
